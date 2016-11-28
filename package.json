@@ -1,6 +1,6 @@
 {
   "name": "synced-interval",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A interval which syncs with the clock",
   "main": "lib/index.js",
   "scripts": {
