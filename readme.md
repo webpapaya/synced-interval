@@ -4,6 +4,11 @@ A interval library which syncs automatically with the browser time.
 
 # Usage
 
+````
+npm install synced-interval --save
+````
+
+
 ````javascript
 import { 
   setSyncedInterval, 
@@ -13,4 +18,3 @@ import {
 const timeoutId = setSyncedInterval(() => { /* do something crazy */}, 200);
 clearSyncedInterval(timeoutId);
 ````
-

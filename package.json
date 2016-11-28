@@ -1,7 +1,7 @@
 {
-  "name": "iterval",
+  "name": "synced-interval",
   "version": "0.0.0",
-  "description": "A promis utility library",
+  "description": "A interval which syncs with the clock",
   "main": "lib/index.js",
   "scripts": {
     "lint": "eslint-crewmeister src",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/webPapaya/promise-frites.git"
+    "url": "git+https://github.com/webPapaya/synced-interval.git"
   },
   "devDependencies": {
     "babel-cli": "^6.10.1",
@@ -24,8 +24,8 @@
     "lolex": "^1.4.0"
   },
   "keywords": [
-    "promise",
-    "utility",
+    "setInterval",
+    "clearInterval",
     "es6",
     "es2016"
   ],
