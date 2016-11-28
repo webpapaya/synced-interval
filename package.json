@@ -20,7 +20,8 @@
     "babel-register": "^6.9.0",
     "eslint-config-crewmeister": "latest",
     "hamjest": "^2.13.0",
-    "mocha": "^2.5.3"
+    "mocha": "^2.5.3",
+    "lolex": "^1.4.0"
   },
   "keywords": [
     "promise",
