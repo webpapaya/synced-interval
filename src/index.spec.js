@@ -7,21 +7,28 @@ const defaultContext = {
 };
 
 const ONE_SECOND = 1000;
-const setWithTimeSyncedInterval = (fn, context = defaultContext) => {
-  const nextTick = ONE_SECOND - new context.Date().getMilliseconds();
-
-  context.setTimeout(() => {
+const setSyncedInterval = (fn, context = defaultContext, ids = []) => {
+  const scheduleNext = () => {
+    setSyncedInterval(fn, context, ids);
     fn();
-    setWithTimeSyncedInterval(fn, context);
-  }, nextTick);
+  };
+  const nextTick = ONE_SECOND - new context.Date().getMilliseconds();
+  const timeoutId = context.setTimeout(scheduleNext, nextTick);
+
+  ids.push(timeoutId);
+  return ids;
 };
 
-describe('setWithTimeSyncedInterval', () => {
+const clearSyncedInterval = (ids, context) =>
+  ids.forEach((id) => context.clearTimeout(id));
 
+
+
+describe('setSyncedInterval', () => {
   it('executes given fn', (done) => {
     const context = lolex.createClock(0, ['setTimeout', 'setInterval']);
 
-    setWithTimeSyncedInterval(() => {
+    setSyncedInterval(() => {
       assertThat(new context.Date(), equalTo(new Date(1000)));
       done();
     }, context);
@@ -32,7 +39,7 @@ describe('setWithTimeSyncedInterval', () => {
   it('tick is executed on second', (done) => {
     const context = lolex.createClock(10, ['setTimeout', 'setInterval']);
 
-    setWithTimeSyncedInterval(() => {
+    setSyncedInterval(() => {
       assertThat(new context.Date(), equalTo(new Date(1000)));
       done();
     }, context);
@@ -44,7 +51,7 @@ describe('setWithTimeSyncedInterval', () => {
     const context = lolex.createClock(10, ['setTimeout', 'setInterval']);
     let timesExecuted = 0;
 
-    setWithTimeSyncedInterval(() => {
+    setSyncedInterval(() => {
       timesExecuted++;
     }, context);
 
@@ -55,6 +62,56 @@ describe('setWithTimeSyncedInterval', () => {
 
     context.tick(1000);
     context.tick(1000);
+    context.tick(1000);
+  });
+
+  it('after clearTimeout fn isn\'t executed', (done) => {
+    const context = lolex.createClock(10, ['setTimeout', 'setInterval', 'clearTimeout']);
+
+    let timesExecuted = 0;
+    const id = setSyncedInterval(() => {
+      timesExecuted++;
+    }, context);
+
+    clearSyncedInterval(id, context);
+
+    context.setTimeout(() => {
+      assertThat(timesExecuted, equalTo(0));
+      done();
+    }, 3000);
+
+    context.tick(1000);
+    context.tick(1000);
+    context.tick(1000);
+  });
+
+  it('clearSyncedInterval doesn\'t execute registered callbacks' , () => {
+    const context = lolex.createClock(10, ['setTimeout', 'setInterval', 'clearTimeout']);
+    const id1 = context.setTimeout(() => {
+      assertThat(false, equalTo(true));
+    }, 1000);
+
+    const id2 = context.setTimeout(() => {
+      assertThat(false, equalTo(true));
+    }, 1000);
+
+    clearSyncedInterval([id1, id2], context);
+    context.tick(1000);
+    context.tick(1000);
+  });
+
+  it('clearSyncedInterval works with nested timeouts as well' , () => {
+    const context = lolex.createClock(10, ['setTimeout', 'setInterval', 'clearTimeout']);
+    let id2 = null;
+    const id1 = context.setTimeout(() => {
+      assertThat(true, equalTo(true));
+      id2 = context.setTimeout(() => {
+        assertThat(false, equalTo(true));
+      }, 1000);
+    }, 1000);
+
+    context.tick(1000);
+    clearSyncedInterval([id1, id2], context);
     context.tick(1000);
   });
 });
