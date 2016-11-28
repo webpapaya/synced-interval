@@ -1,25 +1,25 @@
 import { assertThat, equalTo } from 'hamjest';
 import lolex from 'lolex';
 
-let defaultContext = {
+const defaultContext = {
   setTimeout: (...args) => global.setTimeout(...args),
   Date: Date
 };
 
 const ONE_SECOND = 1000;
-const setWithTimeSyncedInterval = (fn, clock) => {
-  const nextTick = ONE_SECOND - new clock.Date().getMilliseconds();
+const setWithTimeSyncedInterval = (fn, context = defaultContext) => {
+  const nextTick = ONE_SECOND - new context.Date().getMilliseconds();
 
-  clock.setTimeout(() => {
+  context.setTimeout(() => {
     fn();
-    setWithTimeSyncedInterval(fn, clock);
+    setWithTimeSyncedInterval(fn, context);
   }, nextTick);
 };
 
 describe('setWithTimeSyncedInterval', () => {
-  let context = {};
+
   it('executes given fn', (done) => {
-    context = lolex.createClock(0, ['setTimeout', 'setInterval']);
+    const context = lolex.createClock(0, ['setTimeout', 'setInterval']);
 
     setWithTimeSyncedInterval(() => {
       assertThat(new context.Date(), equalTo(new Date(1000)));
@@ -30,7 +30,7 @@ describe('setWithTimeSyncedInterval', () => {
   });
 
   it('tick is executed on second', (done) => {
-    context = lolex.createClock(10, ['setTimeout', 'setInterval']);
+    const context = lolex.createClock(10, ['setTimeout', 'setInterval']);
 
     setWithTimeSyncedInterval(() => {
       assertThat(new context.Date(), equalTo(new Date(1000)));
@@ -41,7 +41,7 @@ describe('setWithTimeSyncedInterval', () => {
   });
 
   it('tick is executed every second', (done) => {
-    context = lolex.createClock(10, ['setTimeout', 'setInterval']);
+    const context = lolex.createClock(10, ['setTimeout', 'setInterval']);
     let timesExecuted = 0;
 
     setWithTimeSyncedInterval(() => {
