@@ -1,6 +1,6 @@
 const defaultContext = {
   setTimeout: (...args) => global.setTimeout(...args),
-  Date: Date
+  Date: Date,
 };
 
 const ONE_SECOND = 1000;

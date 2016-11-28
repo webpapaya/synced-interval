@@ -63,7 +63,7 @@ describe('setSyncedInterval', () => {
     context.tick(1000);
   });
 
-  it('clearSyncedInterval doesn\'t execute registered callbacks' , () => {
+  it('clearSyncedInterval doesn\'t execute registered callbacks', () => {
     const context = lolex.createClock(10, ['setTimeout', 'setInterval', 'clearTimeout']);
     const id1 = context.setTimeout(() => {
       assertThat(false, equalTo(true));
@@ -78,7 +78,7 @@ describe('setSyncedInterval', () => {
     context.tick(1000);
   });
 
-  it('clearSyncedInterval works with nested timeouts as well' , () => {
+  it('clearSyncedInterval works with nested timeouts as well', () => {
     const context = lolex.createClock(10, ['setTimeout', 'setInterval', 'clearTimeout']);
     let id2 = null;
     const id1 = context.setTimeout(() => {
