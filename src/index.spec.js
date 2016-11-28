@@ -1,28 +1,6 @@
 import { assertThat, equalTo } from 'hamjest';
 import lolex from 'lolex';
-
-const defaultContext = {
-  setTimeout: (...args) => global.setTimeout(...args),
-  Date: Date
-};
-
-const ONE_SECOND = 1000;
-const setSyncedInterval = (fn, context = defaultContext, ids = []) => {
-  const scheduleNext = () => {
-    setSyncedInterval(fn, context, ids);
-    fn();
-  };
-  const nextTick = ONE_SECOND - new context.Date().getMilliseconds();
-  const timeoutId = context.setTimeout(scheduleNext, nextTick);
-
-  ids.push(timeoutId);
-  return ids;
-};
-
-const clearSyncedInterval = (ids, context) =>
-  ids.forEach((id) => context.clearTimeout(id));
-
-
+import { setSyncedInterval, clearSyncedInterval } from './index';
 
 describe('setSyncedInterval', () => {
   it('executes given fn', (done) => {
