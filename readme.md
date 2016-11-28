@@ -13,7 +13,7 @@ npm install synced-interval --save
 import { 
   setSyncedInterval, 
   clearSyncedInterval, 
-} from 'synced-interval;
+} from 'synced-interval';
 
 const timeoutId = setSyncedInterval(() => { /* do something crazy */}, 200);
 clearSyncedInterval(timeoutId);
