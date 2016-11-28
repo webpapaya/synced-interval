@@ -12,9 +12,45 @@ describe('setSyncedInterval', () => {
     setSyncedInterval(() => {
       assertThat(new context.Date(), equalTo(new Date(1000)));
       done();
-    }, context);
+    }, 1000, context);
 
     context.tick(1000);
+  });
+
+  it('handles a 500ms interval correctly', (done) => {
+    const context = createContext(0);
+    let wasCalled = 0;
+    setSyncedInterval(() => {
+      wasCalled += 1;
+    }, 500, context);
+
+    context.tick(1000);
+    assertThat(wasCalled, equalTo(2));
+    done();
+  });
+
+  it('handles a 200ms interval correctly', (done) => {
+    const context = createContext(0);
+    let wasCalled = 0;
+    setSyncedInterval(() => {
+      wasCalled += 1;
+    }, 200, context);
+
+    context.tick(1000);
+    assertThat(wasCalled, equalTo(5));
+    done();
+  });
+
+  it('handles a 2000ms interval correctly', (done) => {
+    const context = createContext(0);
+    let wasCalled = 0;
+    setSyncedInterval(() => {
+      wasCalled += 1;
+    }, 2000, context);
+
+    context.tick(2000);
+    assertThat(wasCalled, equalTo(1));
+    done();
   });
 
   it('executes interval callback at correct time', (done) => {
@@ -23,7 +59,7 @@ describe('setSyncedInterval', () => {
     setSyncedInterval(() => {
       assertThat(new context.Date(), equalTo(new Date(1000)));
       done();
-    }, context);
+    }, 1000, context);
 
     context.tick(1000);
   });
@@ -34,7 +70,7 @@ describe('setSyncedInterval', () => {
 
     setSyncedInterval(() => {
       timesExecuted++;
-    }, context);
+    }, 1000, context);
 
     context.setTimeout(() => {
       assertThat(timesExecuted, equalTo(3));
@@ -54,7 +90,7 @@ describe('clearSyncedInterval', () => {
     let timesExecuted = 0;
     const id = setSyncedInterval(() => {
       timesExecuted++;
-    }, context);
+    }, 1000, context);
 
     clearSyncedInterval(id, context);
 
