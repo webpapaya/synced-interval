@@ -6,7 +6,7 @@ const createContext = (timestamp = 0) =>
   lolex.createClock(timestamp, ['setTimeout', 'clearTimeout']);
 
 describe('setSyncedInterval', () => {
-  it('executes given fn', (done) => {
+  it('executes interval callback after 1 second', (done) => {
     const context = createContext(0);
 
     setSyncedInterval(() => {
@@ -17,7 +17,7 @@ describe('setSyncedInterval', () => {
     context.tick(1000);
   });
 
-  it('tick is executed on second', (done) => {
+  it('executes interval callback at correct time', (done) => {
     const context = createContext(10);
 
     setSyncedInterval(() => {
@@ -28,7 +28,7 @@ describe('setSyncedInterval', () => {
     context.tick(1000);
   });
 
-  it('tick is executed every second', (done) => {
+  it('executes interval callback multiple times every second', (done) => {
     const context = createContext(10);
     let timesExecuted = 0;
 
@@ -98,8 +98,3 @@ describe('clearSyncedInterval', () => {
     context.tick(1000);
   });
 });
-
-
-
-
-
