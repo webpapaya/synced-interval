@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint-crewmeister src",
     "test": "mocha src/{*,**/*,**/**/*,**/**/**/*}.spec.js --recursive --compilers js:babel-register --reporter spec",
-    "prepublish": "babel src/ --out-dir lib/ --ignore *.spec.js"
+    "prepublish": "rm -rf lib/ && babel src/ --out-dir lib/ --ignore *.spec.js"
   },
   "repository": {
     "type": "git",
