@@ -1,0 +1,51 @@
+<html>
+  <head>
+
+  </head>
+  <body>
+  <div>
+    <h1>regular interval</h1>
+    <div id="regular-interval"></div>
+  </div>
+  <div>
+    <h1>synced interval</h1>
+    <div id="synced-interval"></div>
+  </div>
+
+
+
+
+  <script>
+    window.exports = {};
+    window.global = window;
+  </script>
+  <script src="lib/index.js"></script>
+  <script>
+    function timeNow() {
+      const date = new Date();
+      return date.toISOString().substr(11, 8);
+    }
+
+    function update(element) {
+      element.innerHTML = timeNow();
+    }
+
+    var regularInterval = document.getElementById('regular-interval');
+    window.setInterval(() => {
+      update(regularInterval);
+    }, 1000);
+    update(regularInterval);
+
+    var syncedInterval = document.getElementById('synced-interval');
+    setSyncedInterval(() => {
+      update(syncedInterval);
+    }, 1000);
+    update(syncedInterval);
+
+    window.setInterval(() => {
+      update(syncedInterval);
+      update(regularInterval);
+    }, 600);
+  </script>
+  </body>
+</html>
