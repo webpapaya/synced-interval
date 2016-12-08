@@ -4,6 +4,8 @@
 
 A interval library which syncs automatically with the browser time.
 
+[Demo](https://webpapaya.github.io/synced-interval/)
+
 # Usage
 
 ````
