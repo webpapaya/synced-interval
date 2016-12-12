@@ -1,5 +1,6 @@
 const defaultContext = {
   setTimeout: (...args) => global.setTimeout(...args),
+  clearTimeout: (...args) => global.clearTimeout(...args),
   Date: Date,
 };
 
