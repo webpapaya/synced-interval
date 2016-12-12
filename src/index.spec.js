@@ -133,4 +133,9 @@ describe('clearSyncedInterval', () => {
     clearSyncedInterval([id1, id2], context);
     context.tick(1000);
   });
+
+
+  it('doesn\'t throw if no ids are passed in', () => {
+    clearSyncedInterval();
+  });
 });

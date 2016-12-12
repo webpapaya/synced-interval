@@ -15,5 +15,5 @@ export const setSyncedInterval = (fn, timeout, context = defaultContext, ids = [
   return ids;
 };
 
-export const clearSyncedInterval = (ids, context) =>
+export const clearSyncedInterval = (ids = [], context = defaultContext) =>
   ids.forEach((id) => context.clearTimeout(id));
