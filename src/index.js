@@ -18,4 +18,4 @@ export const setSyncedInterval = (fn, timeout) => {
   return () => global.cancelAnimationFrame(animationFrameId);
 };
 
-export const clearSyncedInterval = (cancelFn) => cancelFn();
+export const clearSyncedInterval = (cancelFn) => cancelFn && cancelFn();
