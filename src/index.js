@@ -1,20 +1,21 @@
-const defaultContext = {
-  setTimeout: (...args) => global.setTimeout(...args),
-  clearTimeout: (...args) => global.clearTimeout(...args),
-  Date: Date,
-};
+import './polyfill';
 
-export const setSyncedInterval = (fn, timeout, context = defaultContext, ids = []) => {
-  const scheduleNext = () => {
-    setSyncedInterval(fn, timeout, context, ids);
-    fn();
+export const setSyncedInterval = (fn, timeout) => {
+  let animationFrameId;
+  let then = Math.floor(Date.now() / timeout);
+
+  const tick = () => {
+    animationFrameId = global.requestAnimationFrame(tick);
+
+    const now = Math.floor(Date.now() / timeout);
+    if (then < now) {
+      then = now;
+      fn();
+    }
   };
-  const nextTick = timeout - new context.Date().getMilliseconds() % timeout;
-  const timeoutId = context.setTimeout(scheduleNext, nextTick);
 
-  ids.push(timeoutId);
-  return ids;
+  tick();
+  return () => global.cancelAnimationFrame(animationFrameId);
 };
 
-export const clearSyncedInterval = (ids = [], context = defaultContext) =>
-  ids.forEach((id) => context.clearTimeout(id));
+export const clearSyncedInterval = (cancelFn) => cancelFn();
