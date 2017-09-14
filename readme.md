@@ -4,7 +4,13 @@
 
 A interval library which syncs automatically with the browser time.
 
-[Demo](https://webpapaya.github.io/synced-interval/)
+# Why
+
+In React Apps the applications might be rendered at arbitrary times. 
+When implementing a timer or a stop watch this might lead to a jumpy 
+behaviour of the numbers as the [Demo](https://webpapaya.github.io/synced-interval/) 
+shows. This library solves this issue by syncing the timer with the 
+time of the browser.
 
 # Usage
 
